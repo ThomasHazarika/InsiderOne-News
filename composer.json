@@ -1,0 +1,25 @@
+{
+    "name": "t/insider-one_news",
+    "autoload": {
+        "psr-4": {
+            "T\\InsiderOneNews\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Thomas Hazarika",
+            "email": "hazarikathomas1@gmail.com"
+        }
+    ],
+    "require": {
+        "simplepie/simplepie": "^1.9",
+        "andreskrey/readability.php": "^2.1",
+        "google-gemini-php/client": "^2.7",
+        "guzzlehttp/guzzle": "^7.10"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}
