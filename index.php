@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="assets/css/style.css?v=3.3">
 
     <!-- tailwindcss -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
 
     <!-- google font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&amp;display=swap"
@@ -494,7 +494,7 @@
 
             <div class="mb-10">
                 <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight mb-3">Top News Today</h2>
-                <div class="h-1 w-full bg-[#EBB400] rounded-full"></div>
+                <div style="background-color: #EBB400;" class="h-1 w-full rounded-full"></div>
             </div>
 
             <div id="sync-loader">
@@ -508,14 +508,14 @@
 
 
 
-                <div class="columns-1 md:columns-2 lg:columns-2 gap-12 space-y-12">
+                <div class="columns-1 md:columns-2 gap-12 space-y-12">
                     <?php while ($row = $result->fetch_assoc()): ?>
-                        <div class="break-inside-avoid bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
+                        <div class="break-inside-avoid bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 mb-10">
 
                             <?php if ($row['image_url']): ?>
                                 <div class="relative overflow-hidden bg-gray-200">
                                     <img src="<?php echo $row['image_url']; ?>"
-                                        class="object-cover w-full h-auto" style="height: 300px;"
+                                        class="object-cover w-full h-auto" style="height: 250px;"
                                         alt="News Image">
                                 </div>
                             <?php endif; ?>
@@ -536,8 +536,6 @@
 
                                 <div class="ai-content text-gray-600 text-sm leading-relaxed text-justify mb-10">
                                     <?php
-                                    // Requirement: Show full summary with HTML support
-                                    // This renders the <h3>, <ul>, and <li> tags from Gemini
                                     echo $row['summary'] ?? '<p>No content available.</p>';
                                     ?>
                                 </div>
