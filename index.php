@@ -422,33 +422,71 @@
             .ai-content p {
                 margin-bottom: 1rem;
             }
-        </style>
 
-        <!-- main contents -->
+            #sync-loader {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.9);
+                z-index: 9999;
+                text-align: center;
+                padding-top: 20%;
+            }
+
+            .spinner {
+                border: 4px solid #f3f3f3;
+                border-top: 4px solid #3498db;
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+                animation: spin 2s linear infinite;
+                display: inline-block;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
 
 
         <?php
-        // 1. Database Connection (Using your verified Herd settings)
+        // Database Connection
         $db = new mysqli('127.0.0.1', 'root', 'Thomas', 'ai_news_generator');
 
-        // 2. Fetch all articles, newest first
+        // Fetch all articles, newest first
         $result = $db->query("SELECT * FROM articles ORDER BY created_at DESC");
-        
 
-        
-        // 3. Check when the last article was created
         $last_update = $db->query("SELECT created_at FROM articles ORDER BY created_at DESC LIMIT 1")->fetch_assoc();
 
-        if ($last_update) {
-            $last_time = strtotime($last_update['created_at']);
-            $twelve_hours_ago = time() - (12 * 60 * 60);
-
-            // 4. If the last news is older than 12 hours, redirect to sync
-            if ($last_time < $twelve_hours_ago) {
-                header("Location: fetch_news.php");
-                exit;
-            }
+        $needs_sync = false;
+        if (!$last_update || (time() - strtotime($last_update['created_at']) > (12 * 60 * 60))) {
+            $needs_sync = true;
         }
+
+
+
+        // // Check when the last article was created
+        // $last_update = $db->query("SELECT created_at FROM articles ORDER BY created_at DESC LIMIT 1")->fetch_assoc();
+
+        // if ($last_update) {
+        //     $last_time = strtotime($last_update['created_at']);
+        //     $twelve_hours_ago = time() - (12 * 60 * 60);
+
+        //     // If the last news is older than 12 hours, redirect to sync
+        //     if ($last_time < $twelve_hours_ago) {
+        //         header("Location: fetch_news.php");
+        //         exit;
+        //     }
+        // }
         ?>
 
         <main id="site__main"
@@ -457,6 +495,12 @@
             <div class="mb-10">
                 <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight mb-3">Top News Today</h2>
                 <div class="h-1 w-full bg-[#EBB400] rounded-full"></div>
+            </div>
+
+            <div id="sync-loader">
+                <div class="spinner"></div>
+                <h2 style="font-family: sans-serif; margin-top: 20px;">Updating InsiderOne News...</h2>
+                <p>Curating your feed. Please wait...</p>
             </div>
 
 
@@ -522,6 +566,31 @@
 
 
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            <?php if ($needs_sync): ?>
+                // Show the loading screen
+                $('#sync-loader').fadeIn();
+
+                // Trigger fetch_news.php
+                $.ajax({
+                    url: 'fetch_news.php',
+                    type: 'GET',
+                    success: function(data) {
+                        console.log("Sync Complete");
+                        location.reload(); // Refresh to show new news
+                    },
+                    error: function() {
+                        setTimeout(function() {
+                            $('#sync-loader').fadeOut();
+                        }, 2000);
+                    }
+                });
+            <?php endif; ?>
+        });
+    </script>
 
     <!--bottom navbar-->
     <div class="sticky-tab">
