@@ -455,6 +455,24 @@
                     transform: rotate(360deg);
                 }
             }
+
+            #test {
+                /* Mobile View*/
+                column-count: 1;
+                column-gap: 3rem;
+                display: block;
+            }
+
+            #test>*+* {
+                margin-top: 3rem;
+            }
+
+            /* Responsive: Desktop */
+            @media (min-width: 800px) {
+                #test {
+                    column-count: 2;
+                }
+            }
         </style>
 
 
@@ -471,22 +489,6 @@
         if (!$last_update || (time() - strtotime($last_update['created_at']) > (12 * 60 * 60))) {
             $needs_sync = true;
         }
-
-
-
-        // // Check when the last article was created
-        // $last_update = $db->query("SELECT created_at FROM articles ORDER BY created_at DESC LIMIT 1")->fetch_assoc();
-
-        // if ($last_update) {
-        //     $last_time = strtotime($last_update['created_at']);
-        //     $twelve_hours_ago = time() - (12 * 60 * 60);
-
-        //     // If the last news is older than 12 hours, redirect to sync
-        //     if ($last_time < $twelve_hours_ago) {
-        //         header("Location: fetch_news.php");
-        //         exit;
-        //     }
-        // }
         ?>
 
         <main id="site__main"
@@ -506,9 +508,7 @@
 
             <div class="2xl:max-w-[1220px] max-w-[1065px] mx-auto">
 
-
-
-                <div class="columns-1 md:columns-2 gap-12 space-y-12">
+                <div id="test" class="columns-1 md:columns-2 gap-12 space-y-12">
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <div class="break-inside-avoid bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 mb-10">
 
@@ -539,9 +539,6 @@
                                     echo $row['summary'] ?? '<p>No content available.</p>';
                                     ?>
                                 </div>
-
-
-
                                 <div class="pt-6 border-t border-gray-50 flex justify-between items-center">
                                     <p class="text-[9px] font-bold text-gray-400 uppercase tracking-[0.2em]">Source Article</p>
                                     <a href="<?php echo $row['source_url']; ?>" target="_blank" class="text-black hover:text-blue-600 transition-colors">
@@ -554,11 +551,6 @@
                         </div>
                     <?php endwhile; ?>
                 </div>
-
-
-
-
-
             </div><br><br><br>
         </main>
 
