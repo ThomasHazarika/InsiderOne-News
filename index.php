@@ -470,7 +470,7 @@
             /* Responsive: Desktop */
             @media (min-width: 800px) {
                 #test {
-                    column-count: 2;
+                    column-count: 1;
                 }
             }
         </style>
@@ -491,13 +491,8 @@
         }
         ?>
 
-        <main id="site__main"
-            class="2xl:ml-[--w-side]  xl:ml-[--w-side-sm] py-10 p-2.5 h-[calc(100vh-var(--m-top))] mt-[--m-top]">
-
-            <div class="mb-10">
-                <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight mb-3">Top News Today</h2>
-                <div style="background-color: #EBB400;" class="h-1 w-full rounded-full"></div>
-            </div>
+        <!-- main contents -->
+        <main id="site__main" class="2xl:ml-[--w-side]  xl:ml-[--w-side-sm] p-2.5 h-[calc(100vh-var(--m-top))] mt-[--m-top]">
 
             <div id="sync-loader">
                 <div class="spinner"></div>
@@ -505,10 +500,19 @@
                 <p>Curating your feed. Please wait...</p>
             </div>
 
+            <!-- timeline -->
+            <div class="lg:flex 2xl:gap-16 gap-12 max-w-[1065px] mx-auto" id="js-oversized">
 
-            <div class="2xl:max-w-[1220px] max-w-[1065px] mx-auto">
+
 
                 <div id="test" class="columns-1 md:columns-2 gap-12 space-y-12">
+
+                    <div class="mb-10">
+                        <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight mb-3">Top News Today</h2>
+                        <div style="background-color: #EBB400;" class="h-1 w-full rounded-full"></div>
+                    </div>
+
+
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <div class="break-inside-avoid bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 mb-10">
 
@@ -551,7 +555,73 @@
                         </div>
                     <?php endwhile; ?>
                 </div>
-            </div><br><br><br>
+
+
+
+
+                <!-- sidebar -->
+                <div class="flex-1">
+
+                    <div class="lg:space-y-4 lg:pb-8 max-lg:grid sm:grid-cols-2 max-lg:gap-6">
+
+
+
+                        <div class="2xl:w-[380px] lg:w-[330px] w-full">
+
+                            <div class="lg:space-y-6 space-y-4 lg:pb-8 max-lg:grid sm:grid-cols-2 max-lg:gap-6"
+                                uk-sticky="media: 1024; end: #js-oversized; offset: 80">
+
+
+                                <div class="box p-5 px-6 pb-8">
+
+                                    <div class="flex items-baseline justify-between text-black dark:text-white">
+                                        <h3 class="font-bold text-base"> Trending News</h3>
+                                    </div>
+
+                                    <div class="mt-4 space-y-4">
+                                        <?php
+                                        $trending_query = "SELECT title, created_at, source_url, topic FROM articles ORDER BY created_at DESC LIMIT 5";
+                                        $trending_result = $db->query($trending_query);
+
+                                        if ($trending_result && $trending_result->num_rows > 0):
+                                            while ($news = $trending_result->fetch_assoc()):
+                                        ?>
+                                                <div>
+                                                    <a href="<?php echo htmlspecialchars($news['source_url']); ?>" target="_blank">
+                                                        <h4 class="text-sm font-normal text-black dark:text-white duration-200 hover:opacity-80">
+                                                            <?php echo htmlspecialchars($news['title']); ?>
+                                                        </h4>
+                                                    </a>
+                                                    <div class="text-xs text-gray-400 mt-2 flex items-center gap-2">
+                                                        <span class="text-blue-600 uppercase font-bold" style="font-size: 9px;">
+                                                            <?php echo htmlspecialchars($news['topic']); ?>
+                                                        </span>
+                                                        <div>•</div>
+                                                        <div><?php echo date('M d, Y', strtotime($news['created_at'])); ?></div>
+                                                    </div>
+                                                </div>
+                                            <?php
+                                            endwhile;
+                                        else:
+                                            ?>
+                                            <p class="text-xs text-gray-400">No trending news available.</p>
+                                        <?php endif; ?>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+
+                    </div>
+
+                </div><br><br><br>
+            </div>
+
         </main>
 
 
