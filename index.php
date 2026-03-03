@@ -473,10 +473,31 @@
                     column-count: 1;
                 }
             }
+
+            .no-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+
+            .no-scrollbar {
+                -ms-overflow-style: none;
+                /* IE and Edge */
+                scrollbar-width: none;
+                /* Firefox */
+            }
+
+            @media (max-width: 1023px) {
+                #sidebar {
+                    display: none;
+                }
+            }
         </style>
 
 
         <?php
+
+
+
+
         // Database Connection
         $db = new mysqli('127.0.0.1', 'root', 'Thomas', 'ai_news_generator');
 
@@ -512,9 +533,47 @@
                         <div style="background-color: #EBB400;" class="h-1 w-full rounded-full"></div>
                     </div>
 
+                    <!-- Selection Bar -->
+                    <div class="relative flex items-center group">
+
+                        <button onclick="scrollCategories(-100)" class="absolute left-0 z-10 p-1 bg-white/80 rounded-full shadow-md hover:bg-white transition-all md:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-gray-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                            </svg>
+                        </button>
+
+                        <div id="categoryBar" class="overflow-x-auto no-scrollbar scroll-smooth">
+                            <div class="flex items-center gap-0.5 min-w-max py-2">
+                                <button onclick="filterCategory('All', this)"
+                                    class=" category-btn active px-6 py-2 rounded-full border border-blue-600 bg-blue-50 text-blue-600 text-xs font-bold uppercase transition-all flex-shrink-0">
+                                    All
+                                </button>
+
+                                <?php
+                                $topics = ['Career', 'Technology', 'Space', 'Science', 'AI', 'Medical'];
+                                foreach ($topics as $topic):
+                                ?>
+                                    <button onclick="filterCategory('<?php echo $topic; ?>', this)"
+                                        class="category-btn px-6 py-2 rounded-full border border-gray-200 text-gray-500 text-xs font-bold uppercase hover:border-blue-600 hover:text-blue-600 transition-all flex-shrink-0">
+                                        <?php echo $topic; ?>
+                                    </button>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+
+                        <button onclick="scrollCategories(100)" class="absolute right-0 z-10 p-1 bg-white/80 rounded-full shadow-md hover:bg-white transition-all md:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-gray-600">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            </svg>
+                        </button>
+                    </div>
+
+
+
+
 
                     <?php while ($row = $result->fetch_assoc()): ?>
-                        <div class="break-inside-avoid bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 mb-10">
+                        <div class="break-inside-avoid bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 mb-10" data-topic="<?php echo htmlspecialchars($row['topic']); ?>">
 
                             <?php if ($row['image_url']): ?>
                                 <div class="relative overflow-hidden bg-gray-200">
@@ -560,7 +619,7 @@
 
 
                 <!-- sidebar -->
-                <div class="flex-1">
+                <div id="sidebar" class="flex-1">
 
                     <div class="lg:space-y-4 lg:pb-8 max-lg:grid sm:grid-cols-2 max-lg:gap-6">
 
@@ -650,6 +709,38 @@
                 });
             <?php endif; ?>
         });
+
+        // Filter Section
+        function filterCategory(category, element) {
+
+            // Update active button styles
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-50', 'text-blue-600', 'border-blue-600');
+                btn.classList.add('text-gray-500', 'border-gray-200');
+            });
+
+            element.classList.add('active', 'bg-blue-50', 'text-blue-600', 'border-blue-600');
+            element.classList.remove('text-gray-500', 'border-gray-200');
+
+            // Filter logic
+            const articles = document.querySelectorAll('[data-topic]');
+
+            articles.forEach(article => {
+                if (category === 'All' || article.dataset.topic === category) {
+                    article.style.display = 'block';
+                } else {
+                    article.style.display = 'none';
+                }
+            });
+        }
+
+        function scrollCategories(distance) {
+            const container = document.getElementById('categoryBar');
+            container.scrollBy({
+                left: distance,
+                behavior: 'smooth'
+            });
+        }
     </script>
 
     <!--bottom navbar-->

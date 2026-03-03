@@ -1,4 +1,11 @@
 <?php
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST");
+header("Access-Control-Allow-Headers: Content-Type");
+
+
+
 set_time_limit(1500);
 ignore_user_abort(true);
 
@@ -16,7 +23,7 @@ $db = new mysqli('127.0.0.1', 'root', 'Thomas', 'ai_news_generator', 3306);
 $db->query("DELETE FROM articles");
 $db->query("ALTER TABLE articles AUTO_INCREMENT = 1");
 
-$apiKey = 'AIzaSyAcRj53EJOCO08Ml5lmkaH1aMY6c4qwn60';
+$apiKey = 'AIzaSyB-8KOdpOOpGoLzz0ns9HMsKiHwvltJGxA';
 
 $topics = [
     'Career' => 'https://news.google.com/rss/search?q=career+jobs&hl=en-IN&gl=IN&ceid=IN:en',
