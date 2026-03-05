@@ -548,9 +548,10 @@
                         <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight mb-3">Top News Today</h2>
                         <div style="background-color: #EBB400;" class="h-1 w-full rounded-full"></div>
                     </div>
+                    
 
                     <!-- Selection Bar -->
-                    <div class="relative flex items-center group">
+                    <div class="relative flex items-center justify-center group">
 
                         <button onclick="scrollCategories(-100)" class="absolute left-0 z-10 p-1 bg-white/80 rounded-full shadow-md hover:bg-white transition-all md:hidden">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-gray-600">
@@ -561,7 +562,7 @@
                         <div id="categoryBar" class="overflow-x-auto no-scrollbar scroll-smooth">
                             <div class="flex items-center gap-1 min-w-max py-2">
                                 <button onclick="filterCategory('All', this)"
-                                    class=" category-btn active px-6 py-2 rounded-full border border-blue-600 bg-blue-50 text-blue-600 text-xs font-bold uppercase transition-all flex-shrink-0">
+                                    class=" category-btn active px-4 py-2 rounded-full border border-blue-600 bg-blue-50 text-blue-600 text-xs font-bold uppercase transition-all flex-shrink-0">
                                     All
                                 </button>
 
@@ -570,7 +571,7 @@
                                 foreach ($topics as $topic):
                                 ?>
                                     <button onclick="filterCategory('<?php echo $topic; ?>', this)"
-                                        class="category-btn px-6 py-2 rounded-full border border-gray-200 text-gray-500 text-xs font-bold uppercase hover:border-blue-600 hover:text-blue-600 transition-all flex-shrink-0">
+                                        class="category-btn px-4 py-2 rounded-full border border-gray-200 text-gray-500 text-xs font-bold uppercase hover:border-blue-600 hover:text-blue-600 transition-all flex-shrink-0">
                                         <?php echo $topic; ?>
                                     </button>
                                 <?php endforeach; ?>
