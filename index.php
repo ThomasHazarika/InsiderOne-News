@@ -501,6 +501,8 @@
         </style>
 
 
+
+
         <?php
 
         require_once 'vendor/autoload.php';
@@ -548,7 +550,7 @@
                         <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight mb-3">Top News Today</h2>
                         <div style="background-color: #EBB400;" class="h-1 w-full rounded-full"></div>
                     </div>
-                    
+
 
                     <!-- Selection Bar -->
                     <div class="relative flex items-center justify-center group">
@@ -607,7 +609,7 @@
                                             </div>
 
                                             <div class="card-list-body p-2 md:p-0 flex flex-col justify-center">
-                                                <span class="text-blue-600 font-bold uppercase tracking-wider mb-2" style="font-size: 10px;">
+                                                <span class="font-bold uppercase tracking-wider mb-2" style="font-size: 10px; color: #EBB400;">
                                                     <?php echo htmlspecialchars($row['topic']); ?>
                                                 </span>
 
@@ -665,7 +667,7 @@
                                                         </h4>
                                                     </a>
                                                     <div class="text-xs text-gray-400 mt-2 flex items-center gap-2">
-                                                        <span class="text-blue-600 uppercase font-bold" style="font-size: 9px;">
+                                                        <span class="uppercase font-bold" style="font-size: 10px; color: #EBB400;">
                                                             <?php echo htmlspecialchars($news['topic']); ?>
                                                         </span>
                                                         <div>•</div>

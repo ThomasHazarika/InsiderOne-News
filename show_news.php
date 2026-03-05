@@ -505,20 +505,20 @@
 
 
 
-            require_once 'vendor/autoload.php';
+        require_once 'vendor/autoload.php';
 
-            $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-            $dotenv->load();
+        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+        $dotenv->load();
 
 
-            // Database Connection
-            $db = new mysqli(
-                $_ENV['DB_HOST'],
-                $_ENV['DB_USER'],
-                $_ENV['DB_PASS'],
-                $_ENV['DB_NAME'],
-                $_ENV['DB_PORT']
-            );
+        // Database Connection
+        $db = new mysqli(
+            $_ENV['DB_HOST'],
+            $_ENV['DB_USER'],
+            $_ENV['DB_PASS'],
+            $_ENV['DB_NAME'],
+            $_ENV['DB_PORT']
+        );
 
 
         // Check connection
@@ -530,7 +530,7 @@
 
         $row = null;
         if ($id > 0) {
-            
+
             $stmt = $db->prepare("SELECT * FROM articles WHERE id = ?");
             $stmt->bind_param("i", $id);
             $stmt->execute();
@@ -581,7 +581,7 @@
 
                             <div class="p-8 md:p-12">
                                 <div class="flex items-center justify-between mb-6">
-                                    <span class="text-blue-600 font-bold uppercase tracking-widest text-xs">
+                                    <span class="font-bold uppercase tracking-widest text-xs" style="font-size: 12px; color: #EBB400;">
                                         <?php echo htmlspecialchars($row['topic']); ?>
                                     </span>
                                     <span class="text-gray-400 font-medium text-xs">
@@ -651,7 +651,7 @@
                                                         </h4>
                                                     </a>
                                                     <div class="text-xs text-gray-400 mt-2 flex items-center gap-2">
-                                                        <span class="text-blue-600 uppercase font-bold" style="font-size: 9px;">
+                                                        <span class="uppercase font-bold" style="font-size: 10px; color: #EBB400;">
                                                             <?php echo htmlspecialchars($news['topic']); ?>
                                                         </span>
                                                         <div>•</div>
