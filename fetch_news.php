@@ -1,5 +1,11 @@
 <?php
 
+require_once 'vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST");
 header("Access-Control-Allow-Headers: Content-Type");
@@ -17,13 +23,20 @@ if (ob_get_level() > 0)
 
 require_once 'vendor/autoload.php';
 
-$db = new mysqli('127.0.0.1', 'root', 'Thomas', 'ai_news_generator', 3306);
+$db = new mysqli(
+    $_ENV['DB_HOST'],
+    $_ENV['DB_USER'],
+    $_ENV['DB_PASS'],
+    $_ENV['DB_NAME'],
+    $_ENV['DB_PORT']
+);
+
+$apiKey = $_ENV['API_KEY'];
 
 // 2. Fresh Start logic
 $db->query("DELETE FROM articles");
 $db->query("ALTER TABLE articles AUTO_INCREMENT = 1");
 
-$apiKey = 'AIzaSyB-8KOdpOOpGoLzz0ns9HMsKiHwvltJGxA';
 
 $topics = [
     'Career' => 'https://news.google.com/rss/search?q=career+jobs&hl=en-IN&gl=IN&ceid=IN:en',

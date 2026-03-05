@@ -15,7 +15,8 @@
         "simplepie/simplepie": "^1.9",
         "andreskrey/readability.php": "^2.1",
         "google-gemini-php/client": "^2.7",
-        "guzzlehttp/guzzle": "^7.10"
+        "guzzlehttp/guzzle": "^7.10",
+        "vlucas/phpdotenv": "^5.6"
     },
     "config": {
         "allow-plugins": {

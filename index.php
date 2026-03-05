@@ -15,9 +15,6 @@
     <link rel="stylesheet" href="assets/css/tailwind.css?v=3.3">
     <link rel="stylesheet" href="assets/css/style.css?v=3.3">
 
-    <!-- tailwindcss -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
-
     <!-- google font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&amp;display=swap"
         rel="stylesheet">
@@ -34,8 +31,6 @@
 
         gtag('config', 'G-DVJ2H94MBC');
     </script>
-
-
 </head>
 
 <body>
@@ -61,7 +56,7 @@
                             <a href="https://www.insiderone.in/app/feeds">
                                 <img src="assets/images/InsiderOne Black logo.png" alt="" class="w-36 md:block">
                                 <!-- <img src="assets/images/logo-light.svg" alt="" class="dark:hidden">
-        <img src="assets/images/logo-dark.svg" alt="" class="hidden dark:!block"> -->
+	    <img src="assets/images/logo-dark.svg" alt="" class="hidden dark:!block"> -->
                             </a>
                         </div>
 
@@ -74,7 +69,7 @@
 
                         <!-- header icons -->
                         <div
-                            class="flex items-center sm:gap-4 gap-2 absolute right-5 top-1/2 -translate-y-1/2 text-black mt-4.5">
+                            class="flex items-center sm:gap-4 gap-2 absolute right-5 top-1/2 -translate-y-1/2 text-black">
 
 
 
@@ -238,11 +233,8 @@
                                     <span id="event-arrow" class="arrow-down fas fa-caret-down "></span>
                                 </a>
                                 <ul class="event-show hidden text-black pl-10">
-                                    <li onclick="event.stopPropagation()"><a
-                                            href="https://www.insiderone.in/app/events">All Events</a></li>
-                                    <li onclick="event.stopPropagation()"><a
-                                            href="https://www.insiderone.in/app/registered-events">Registered Events</a>
-                                    </li>
+                                    <li onclick="event.stopPropagation()"><a href="https://www.insiderone.in/app/events">All Events</a></li>
+                                    <li onclick="event.stopPropagation()"><a href="https://www.insiderone.in/app/registered-events">Registered Events</a></li>
                                     <!-- <li><a href="#">Saved Events</a></li> -->
                                 </ul>
                             </li>
@@ -253,16 +245,13 @@
                                     <span id="host-events-arrow" class="arrow-down fas fa-caret-down "></span>
                                 </a>
                                 <ul class="host-events-show hidden text-black pl-10">
-                                    <li onclick="event.stopPropagation()"><a
-                                            href="https://www.insiderone.in/app/host-event">Host an Event</a></li>
-                                    <li onclick="event.stopPropagation()"><a
-                                            href="https://www.insiderone.in/app/hosted-events">My Hosted Events</a></li>
+                                    <li onclick="event.stopPropagation()"><a href="https://www.insiderone.in/app/host-event">Host an Event</a></li>
+                                    <li onclick="event.stopPropagation()"><a href="https://www.insiderone.in/app/hosted-events">My Hosted Events</a></li>
                                 </ul>
                             </li>
                             <li onclick="toggleDropdown(this)">
                                 <a href="https://www.insiderone.in/app/jobs-internships">
-                                    <img src="assets/images/icons/briefcase-outline.svg" alt="jobs&internships"
-                                        class="w-6">
+                                    <img src="assets/images/icons/briefcase-outline.svg" alt="jobs&internships" class="w-6">
                                     <span> Jobs & Internships </span>
                                     <!-- <span id="jobs-internships-arrow" class="arrow-down fas fa-caret-down "></span> -->
                                 </a>
@@ -395,6 +384,9 @@
             </div>
         </div>
 
+        <!-- main contents -->
+
+
         <!-- News feed starts from here -->
 
         <style>
@@ -480,9 +472,7 @@
 
             .no-scrollbar {
                 -ms-overflow-style: none;
-                /* IE and Edge */
                 scrollbar-width: none;
-                /* Firefox */
             }
 
             @media (max-width: 1023px) {
@@ -490,17 +480,43 @@
                     display: none;
                 }
             }
+
+            .news-image-container {
+                width: 100%;
+                height: 150px;
+            }
+
+            @media (min-width: 1024px) {
+                .news-image-container {
+                    width: 256px !important;
+                    height: 150px !important;
+                    display: block !important;
+                }
+
+                .card-list {
+                    display: flex !important;
+                    flex-direction: row !important;
+                }
+            }
         </style>
 
 
         <?php
 
+            require_once 'vendor/autoload.php';
 
+            $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+            $dotenv->load();
 
 
         // Database Connection
-        $db = new mysqli('127.0.0.1', 'root', 'Thomas', 'ai_news_generator');
-
+        $db = new mysqli(
+            $_ENV['DB_HOST'],
+            $_ENV['DB_USER'],
+            $_ENV['DB_PASS'],
+            $_ENV['DB_NAME'],
+            $_ENV['DB_PORT']
+        );
         // Fetch all articles, newest first
         $result = $db->query("SELECT * FROM articles ORDER BY created_at DESC");
 
@@ -522,7 +538,7 @@
             </div>
 
             <!-- timeline -->
-            <div class="lg:flex 2xl:gap-16 gap-12 max-w-[1065px] mx-auto" id="js-oversized">
+            <div class="lg:flex 2xl:gap-16 gap-12 max-w-[900px] mx-auto" id="js-oversized">
 
 
 
@@ -543,7 +559,7 @@
                         </button>
 
                         <div id="categoryBar" class="overflow-x-auto no-scrollbar scroll-smooth">
-                            <div class="flex items-center gap-0.5 min-w-max py-2">
+                            <div class="flex items-center gap-1 min-w-max py-2">
                                 <button onclick="filterCategory('All', this)"
                                     class=" category-btn active px-6 py-2 rounded-full border border-blue-600 bg-blue-50 text-blue-600 text-xs font-bold uppercase transition-all flex-shrink-0">
                                     All
@@ -569,50 +585,46 @@
                     </div>
 
 
+                    <!-- Top News -->
+                    <div class="uk-switcher" id="group-tabs">
 
 
+                        <div class="gap-2.5 uk-active">
 
-                    <?php while ($row = $result->fetch_assoc()): ?>
-                        <div class="break-inside-avoid bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 mb-10" data-topic="<?php echo htmlspecialchars($row['topic']); ?>">
+                            <div class="box mb-6 p-4" uk-scrollspy="target: > div; cls: uk-animation-scale-up; delay: 100 ;repeat: true">
 
-                            <?php if ($row['image_url']): ?>
-                                <div class="relative overflow-hidden bg-gray-200">
-                                    <img src="<?php echo $row['image_url']; ?>"
-                                        class="object-cover w-full h-auto" style="height: 250px;"
-                                        alt="News Image">
-                                </div>
-                            <?php endif; ?>
+                                <?php while ($row = $result->fetch_assoc()): ?>
+                                    <a href="http://insiderone_news.test/show_news.php?id=<?php echo $row['id']; ?>"
+                                        class="block mb-3 transition-transform hover:scale-[1.01] news-item"
+                                        data-topic="<?php echo htmlspecialchars($row['topic']); ?>">
 
-                            <div class="p-8">
-                                <div class="flex items-center justify-between mb-4">
-                                    <span class="text-blue-600 text-[10px] font-bold uppercase tracking-widest">
-                                        <?php echo htmlspecialchars($row['topic']); ?>
-                                    </span>
-                                    <span class="text-[10px] font-bold uppercase tracking-widest text-gray-300">
-                                        <?php echo date('M d, Y', strtotime($row['created_at'])); ?>
-                                    </span>
-                                </div>
+                                        <div class="card-list flex flex-col lg:flex-row bg-white rounded-xl overflow-hidden p-0 md:p-3 gap-0 md:gap-4">
+                                            <div class="news-image-container card-list-media flex-shrink-0">
+                                                <img src="<?php echo !empty($row['image_url']) ? htmlspecialchars($row['image_url']) : 'assets/images/default.png'; ?>"
+                                                    alt="News Image"
+                                                    class="w-full h-full object-cover">
+                                            </div>
 
-                                <h2 class="text-2xl font-bold text-gray-900 mb-6 leading-tight">
-                                    <?php echo htmlspecialchars($row['title']); ?>
-                                </h2>
+                                            <div class="card-list-body p-2 md:p-0 flex flex-col justify-center">
+                                                <span class="text-blue-600 font-bold uppercase tracking-wider mb-2" style="font-size: 10px;">
+                                                    <?php echo htmlspecialchars($row['topic']); ?>
+                                                </span>
 
-                                <div class="ai-content text-gray-600 text-sm leading-relaxed text-justify mb-10">
-                                    <?php
-                                    echo $row['summary'] ?? '<p>No content available.</p>';
-                                    ?>
-                                </div>
-                                <div class="pt-6 border-t border-gray-50 flex justify-between items-center">
-                                    <p class="text-[9px] font-bold text-gray-400 uppercase tracking-[0.2em]">Source Article</p>
-                                    <a href="<?php echo $row['source_url']; ?>" target="_blank" class="text-black hover:text-blue-600 transition-colors">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                                        </svg>
+                                                <h3 class="card-list-title text-gray-900 font-bold leading-tight text-lg md:text-xl mb-3">
+                                                    <?php echo htmlspecialchars($row['title']); ?>
+                                                </h3>
+
+                                                <div class="text-gray-400 font-medium" style="font-size: 11px;">
+                                                    updated on <?php echo date('d M', strtotime($row['created_at'])); ?>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </a>
-                                </div>
+                                    <hr class="card-list-divider" data-topic-divider="<?php echo htmlspecialchars($row['topic']); ?>">
+                                <?php endwhile; ?>
                             </div>
                         </div>
-                    <?php endwhile; ?>
+                    </div>
                 </div>
 
 
@@ -672,19 +684,12 @@
                             </div>
 
                         </div>
-
-
-
-
                     </div>
-
                 </div><br><br><br>
             </div>
-
         </main>
-
-
     </div>
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -699,7 +704,7 @@
                     type: 'GET',
                     success: function(data) {
                         console.log("Sync Complete");
-                        location.reload(); // Refresh to show new news
+                        location.reload();
                     },
                     error: function() {
                         setTimeout(function() {
@@ -713,7 +718,6 @@
         // Filter Section
         function filterCategory(category, element) {
 
-            // Update active button styles
             document.querySelectorAll('.category-btn').forEach(btn => {
                 btn.classList.remove('active', 'bg-blue-50', 'text-blue-600', 'border-blue-600');
                 btn.classList.add('text-gray-500', 'border-gray-200');
@@ -722,14 +726,19 @@
             element.classList.add('active', 'bg-blue-50', 'text-blue-600', 'border-blue-600');
             element.classList.remove('text-gray-500', 'border-gray-200');
 
-            // Filter logic
             const articles = document.querySelectorAll('[data-topic]');
+            const dividers = document.querySelectorAll('[data-topic-divider]');
 
-            articles.forEach(article => {
-                if (category === 'All' || article.dataset.topic === category) {
+            articles.forEach((article, index) => {
+                const topic = article.dataset.topic;
+                const divider = dividers[index];
+
+                if (category === 'All' || topic === category) {
                     article.style.display = 'block';
+                    if (divider) divider.style.display = 'block';
                 } else {
                     article.style.display = 'none';
+                    if (divider) divider.style.display = 'none';
                 }
             });
         }
@@ -742,6 +751,10 @@
             });
         }
     </script>
+
+
+
+    </div>
 
     <!--bottom navbar-->
     <div class="sticky-tab">
