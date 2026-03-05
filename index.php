@@ -503,10 +503,10 @@
 
         <?php
 
-            require_once 'vendor/autoload.php';
+        require_once 'vendor/autoload.php';
 
-            $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-            $dotenv->load();
+        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+        $dotenv->load();
 
 
         // Database Connection
@@ -538,7 +538,7 @@
             </div>
 
             <!-- timeline -->
-            <div class="lg:flex 2xl:gap-16 gap-12 max-w-[900px] mx-auto" id="js-oversized">
+            <div class="lg:flex 2xl:gap-16 gap-12 max-w-[700px] mx-auto" id="js-oversized">
 
 
 
