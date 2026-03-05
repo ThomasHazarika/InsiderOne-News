@@ -600,7 +600,7 @@
                                 <div class="pt-8 border-t border-gray-50 flex justify-between items-center">
                                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Original Source</span>
                                     <a id="full-article" href="<?php echo htmlspecialchars($row['source_url']); ?>" target="_blank"
-                                        class="text-white px-6 py-2 rounded-full text-xs font-bold transition-all">
+                                        class="text-white p-3 rounded-full text-xs font-bold transition-all">
                                         Read Full Article
                                     </a>
                                 </div>
