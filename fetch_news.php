@@ -34,8 +34,8 @@ $db = new mysqli(
 $apiKey = $_ENV['API_KEY'];
 
 // 2. Fresh Start logic
-$db->query("DELETE FROM articles");
-$db->query("ALTER TABLE articles AUTO_INCREMENT = 1");
+// $db->query("DELETE FROM articles");
+// $db->query("ALTER TABLE articles AUTO_INCREMENT = 1");
 
 
 $topics = [
@@ -61,6 +61,20 @@ foreach ($topics as $topicName => $rssUrl) {
 
     $title = $item->get_title();
     $link = $item->get_permalink();
+
+    // DUPLICATE CHECK
+    $hash = hash('sha256', $link);
+    $check_stmt = $db->prepare("SELECT id FROM articles WHERE source_url_hash = ?");
+    $check_stmt->bind_param("s", $hash);
+    $check_stmt->execute();
+    $check_result = $check_stmt->get_result();
+
+    if ($check_result->num_rows > 0) {
+        echo "<strong>$topicName</strong>: <span style='color:blue;'>SKIPPED (Already exists)</span><br>";
+        continue;
+    }
+
+
     $snippet = strip_tags($item->get_description());
 
     echo "Processing <strong>$topicName</strong>... ";
@@ -92,7 +106,7 @@ foreach ($topics as $topicName => $rssUrl) {
     if (isset($result['candidates'][0]['content']['parts'][0]['text'])) {
         $summary = $result['candidates'][0]['content']['parts'][0]['text'];
 
-        
+
         $categoryImages = [
             'Career'     => 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=800&q=80',
             'Technology' => 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
@@ -119,7 +133,6 @@ foreach ($topics as $topicName => $rssUrl) {
         ob_flush();
         flush();
 
-        // To 25 seconds to guarantee staying under the 5 RPM limit
         sleep(25);
     } else {
         echo "<span style='color:red;'>FAILED</span><br>";
@@ -128,8 +141,23 @@ foreach ($topics as $topicName => $rssUrl) {
             echo "<strong>API Error:</strong> " . $result['error']['message'];
             echo "</div>";
         }
-        // Wait 25s before next attempt to reset the quota window
         sleep(25);
     }
 }
+
 echo "<h3>All Categories Updated!</h3>";
+
+// DATABASE CLEANUP LOGIC
+echo "<br><strong>Cleaning up old data...</strong> ";
+
+// Delete articles older than 30 days
+$cleanup_query = "DELETE FROM articles WHERE created_at < DATE_SUB(NOW(), INTERVAL 30 DAY)";
+
+if ($db->query($cleanup_query)) {
+    $deleted_rows = $db->affected_rows;
+    echo "<span style='color:blue;'>Removed $deleted_rows expired articles.</span><br>";
+} else {
+    echo "<span style='color:red;'>Cleanup Error: " . $db->error . "</span><br>";
+}
+
+echo "<h3>All Categories Updated and Archive Cleaned!</h3>";
